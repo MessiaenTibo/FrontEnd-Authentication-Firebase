@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         element: <ForgotPassword/>,
       }
     ]
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

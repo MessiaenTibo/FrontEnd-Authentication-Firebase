@@ -11,10 +11,10 @@ export default () => {
             </div>
             <div className="mb-2">
                 <label className="block" htmlFor="email"><b>Email address</b></label>
-                <input className="border rounded-md w-full p-2" type="email" name="email" id="email" />
+                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover" type="email" name="email" id="email" required/>
             </div>
-            <button className="bg-blue-500 w-full p-2 rounded-md text-white mb-2">Sign in</button>
-            <Link to={'/auth/register'}><p>Don't have an account? <b className="text-blue-500">Create an account.</b></p></Link>
+            <input type="submit" className="bg-blue-500 w-full p-2 rounded-md text-white mb-2 border-2 border-blue-500 focus:outline-none focus:border-blue-800 hover:shadow-input-hover" value="Sign in"></input>
+            <Link className="outline-blue-400" to={'/auth/register'}><p>Don't have an account? <b className="text-blue-500">Create an account.</b></p></Link>
         </>
     )
 }
