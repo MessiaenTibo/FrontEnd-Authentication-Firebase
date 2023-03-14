@@ -2,8 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 export default () => {
     return(
-        <div>
-            <h2>Always here!</h2>
+        <div className='w-96 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2'>
             <Outlet />
         </div>
     )
