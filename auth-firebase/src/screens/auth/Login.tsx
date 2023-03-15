@@ -1,11 +1,36 @@
 import { Key } from "lucide-react";
+import { useState } from "react";
 
 import { Link } from "react-router-dom"
 
 
 export default () => {
+    let [email, setEmail] = useState('');
+    let [password, setPassword] = useState('');
+    let [remember, setRemember] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        //cancel the default action of the event
+        e.preventDefault();
+
+        //get the data from the form
+        email = e.currentTarget.email.value;
+        password = e.currentTarget.password.value;
+        remember = e.currentTarget.remember.checked;
+
+        //set the state
+        setEmail(email);
+        setPassword(password);
+        setRemember(remember);
+
+        //log the data to the console (for testing purposes)
+        console.log('Email: %c' + email,'color: blue; font-weight: bold;')
+        console.log('Password: %c' + password,'color: blue; font-weight: bold;');
+        console.log('Remember state: %c' + remember,'color: blue; font-weight: bold;');
+    }
+
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="flex items-center mb-2">
                 <Key className="w-12 h-12 p-2 text-blue-500 bg-blue-300 inline rounded-full m-2 ml-0" />
                 <h1 className="text-4xl inline">Sign in</h1>

@@ -10,6 +10,9 @@ import Register from './screens/auth/Register';
 import ForgotPassword from './screens/auth/ForgotPassword';
 import AuthContainer from './components/AuthContainer';
 
+// credits to myself :D
+console.log('%cProject by Messiaen Tibo','color: red; font-weight: bold; font-size: 18px;border: 1px solid red; padding: 2px;')
+
 const router = createBrowserRouter([
   {
     path: "/",
