@@ -1,11 +1,43 @@
 import { CalendarCheck } from "lucide-react";
+import { useState } from "react";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+
+import useFirebase from "../../hooks/useFirebase";
 
 
 export default () => {
+    let [email, setEmail] = useState('');
+    let [nickname, setNickname] = useState('');
+    let [password, setPassword] = useState('');
+
+    const {login, register} = useFirebase();
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        //cancel the default action of the event
+        e.preventDefault();
+
+        //get the data from the form
+        email = e.currentTarget.email.value;
+        nickname = e.currentTarget.nickname.value;
+        password = e.currentTarget.password.value;
+
+        //set the state
+        setEmail(email);
+        setNickname(nickname);
+        setPassword(password);
+
+        //log the data to the console (for testing purposes)
+        console.log('Email: %c' + email,'color: blue; font-weight: bold;')
+        console.log('Nickname: %c' + nickname,'color: blue; font-weight: bold;')
+        console.log('Password: %c' + password,'color: blue; font-weight: bold;');
+
+        //send data to firebase
+        register(nickname, email, password);
+    }
+
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="flex items-center mb-2">
                 <CalendarCheck className="w-12 h-12 p-2 text-blue-500 bg-blue-300 inline rounded-full m-2 ml-0" />
                 <h1 className="text-4xl inline">Register</h1>

@@ -1,13 +1,18 @@
-import { Key } from "lucide-react";
+import { Component, Key } from "lucide-react";
 import { useState } from "react";
 
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
+import useFirebase from "../../hooks/useFirebase";
 
 
 export default () => {
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
     let [remember, setRemember] = useState(false);
+
+    const {login, register} = useFirebase();
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         //cancel the default action of the event
@@ -27,6 +32,10 @@ export default () => {
         console.log('Email: %c' + email,'color: blue; font-weight: bold;')
         console.log('Password: %c' + password,'color: blue; font-weight: bold;');
         console.log('Remember state: %c' + remember,'color: blue; font-weight: bold;');
+
+        //send data to firebase
+        const loginCredentials = login(email, password);
+
     }
 
     return(
