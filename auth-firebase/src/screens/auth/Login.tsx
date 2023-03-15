@@ -12,11 +12,11 @@ export default () => {
             </div>
             <div className="mb-2">
                 <label className="block cursor-pointer" htmlFor="email"><b>Email address</b></label>
-                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer" type="email" name="email" id="email" required/>
+                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="email" name="email" id="email" required/>
             </div>
             <div className="mb-2">
                 <label className="block cursor-pointer" htmlFor="password"><b>Password</b></label>
-                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer" type="password" name="password" id="password" required/>
+                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="password" name="password" id="password" required/>
             </div>
             <div className="mb-2">
                 <input className="mr-2 focus:outline-none border focus:border-blue-4OO cursor-pointer" type="checkbox" name="remember" id="remember" />

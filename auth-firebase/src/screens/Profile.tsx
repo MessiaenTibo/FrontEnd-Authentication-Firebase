@@ -12,7 +12,7 @@ export default () => {
             </div>
             <div className="mb-2">
                 <p className="inline">You are logged in with the emailaddress </p>
-                <p className="inline"><b>Martijn.loth@howest.be</b>.</p>
+                <p className="inline"><b>Tibo.messiaen@howest.be</b>.</p>
             </div>
             <div className="mb-2">
                 <p>The uid is 0BfzxfqCXsbqz61CGZBQpI1khEml.</p>
