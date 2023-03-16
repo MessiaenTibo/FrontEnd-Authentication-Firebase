@@ -33,8 +33,6 @@ const firebaseConfig = {
 const app: FirebaseApp = initializeApp(firebaseConfig);
 const auth: Auth = getAuth(app);
 
-console.log({ app })
-
 
 export default () => {
     const navigate = useNavigate();
