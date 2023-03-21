@@ -5,7 +5,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 // TODO: initialize firebase auth
 // require('firebase/auth');
 
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut } from 'firebase/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
 import { Link, useNavigate } from "react-router-dom";
@@ -34,6 +34,20 @@ const app: FirebaseApp = initializeApp(firebaseConfig);
 const auth: Auth = getAuth(app);
 
 
+const actionCodeSettings = {
+    url: 'https://www.example.com/?email=user@example.com',
+    iOS: {
+       bundleId: 'com.example.ios'
+    },
+    android: {
+      packageName: 'com.example.android',
+      installApp: true,
+      minimumVersion: '12'
+    },
+    handleCodeInApp: true
+  };
+
+
 export default () => {
     const navigate = useNavigate();
 
@@ -57,12 +71,14 @@ export default () => {
                 console.log(error)
                 navigate('/', {state: {email,uid,lastLoginAt,createdAt,token} });
             });
+            return("success")
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log({ errorCode, errorMessage })
-            return { errorCode, errorMessage }
+            console.log(errorCode)
+            return errorCode
         });
     }
 
@@ -103,10 +119,15 @@ export default () => {
         });
     }
 
+    const resetPassword = (email:string) => {
+        sendPasswordResetEmail(auth, email, actionCodeSettings)
+    }
+
     return{
         login,
         register,
         logout,
+        resetPassword,
         // - reset password
     }
 }

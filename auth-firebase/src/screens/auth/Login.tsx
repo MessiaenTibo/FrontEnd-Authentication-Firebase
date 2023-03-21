@@ -11,6 +11,8 @@ export default () => {
     let [password, setPassword] = useState('');
     let [remember, setRemember] = useState(false);
 
+    let [error, setError] = useState('none');
+
     const {login, register} = useFirebase();
 
 
@@ -34,8 +36,34 @@ export default () => {
         console.log('Remember state: %c' + remember,'color: blue; font-weight: bold;');
 
         //send data to firebase
-        const loginCredentials = login(email, password);
-
+        const loginState = login(email, password);
+        loginState.then((value) => {
+            console.log(value)
+            if(value == "success"){
+                console.log("Logged in");
+                error = "none";
+                setError(error);
+            }
+            else if(value == "auth/wrong-password"){
+                console.log("Wrong password");
+                //Give password input focus and red border
+                error = "password";
+                setError(error);
+            }
+            else if(value == "auth/user-not-found" ){
+                console.log("Invalid email");
+                //Give email input focus and red border
+                error = "email"
+                setError(error);
+            }
+            else{
+                console.log("Unknown error")
+                //reset the form
+                error = "unkown"
+                setError(error);
+            }
+        })
+        
     }
 
     return(
@@ -44,13 +72,18 @@ export default () => {
                 <Key className="w-12 h-12 p-2 text-blue-500 bg-blue-300 inline rounded-full m-2 ml-0" />
                 <h1 className="text-4xl inline">Sign in</h1>
             </div>
+
+            {error === "unkown" ? <p className="text-red-600">Unknown error</p> : null}
+            {error === "email" ? <p className="text-red-600">Invalid email</p> : null}
+            {error === "password" ? <p className="text-red-600">Wrong password</p> : null}
+
             <div className="mb-2">
-                <label className="block cursor-pointer" htmlFor="email"><b>Email address</b></label>
-                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="email" name="email" id="email" required/>
+                {error === "email" ? <label className="block cursor-pointer text-red-600" htmlFor="email"><b>Email address</b></label> : <label className="block cursor-pointer" htmlFor="email"><b>Email address</b></label>}
+                {error === "email" ? <input className="border border-red-600 rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="email" name="email" id="email" required autoFocus/> : <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="email" name="email" id="email" required/>}
             </div>
             <div className="mb-2">
-                <label className="block cursor-pointer" htmlFor="password"><b>Password</b></label>
-                <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="password" name="password" id="password" required/>
+                {error === "password" ? <label className="block cursor-pointer text-red-600" htmlFor="password"><b>Password</b></label> : <label className="block cursor-pointer" htmlFor="password"><b>Password</b></label>}
+                {error === "password" ? <input className="border border-red-600 rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="password" name="password" id="password" required autoFocus/> : <input className="border rounded-md w-full p-2 focus:outline-none focus:border-blue-400 hover:shadow-input-hover cursor-pointer dark:bg-slate-800" type="password" name="password" id="password" required/>}
             </div>
             <div className="mb-2">
                 <input className="mr-2 focus:outline-none border focus:border-blue-4OO cursor-pointer" type="checkbox" name="remember" id="remember" />
