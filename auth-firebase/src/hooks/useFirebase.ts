@@ -5,7 +5,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 // TODO: initialize firebase auth
 // require('firebase/auth');
 
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail, browserLocalPersistence, setPersistence, onAuthStateChanged, User} from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
 import { Link, useNavigate } from "react-router-dom";
@@ -20,36 +20,28 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_measurementId,
 }
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyD72De_JkY5tzIL89dSPvZwmLmwTCUn58Y",
-//     authDomain: "authentication-3752d.firebaseapp.com",
-//     projectId: "authentication-3752d",
-//     storageBucket: "authentication-3752d.appspot.com",
-//     messagingSenderId: "491111340973",
-//     appId: "1:491111340973:web:6889a9f0fc9b029612df24",
-//     measurementId: "G-H7L9ZR9LCH"
-//   };
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
 const auth: Auth = getAuth(app);
 
-
-const actionCodeSettings = {
-    url: 'https://www.example.com/?email=user@example.com',
-    iOS: {
-       bundleId: 'com.example.ios'
-    },
-    android: {
-      packageName: 'com.example.android',
-      installApp: true,
-      minimumVersion: '12'
-    },
-    handleCodeInApp: true
-  };
+setPersistence(auth, browserLocalPersistence) // whatever happens (login, register, etc.), keep the data in the browser
+//can also be to sessionlocalPersistence
+//can also be to nonePersistence
 
 
 export default () => {
     const navigate = useNavigate();
+
+    // onAuthStateChanged(auth, (user: User | null) => {
+    //     if (user) {
+    //         console.log(user.email)
+    //         navigate('/', {state: {email: user.email,uid: user.uid,lastLoginAt: user.metadata.lastSignInTime,createdAt: user.metadata.creationTime,token: ''} })
+    //     } else {
+    //         // User is signed out
+    //         // ...
+    //     }
+    // });
+
 
 
     const login = (emailLogin: string, password: string) => {
@@ -100,19 +92,21 @@ export default () => {
                 console.log(error)
                 navigate('/', {state: {email,uid,lastLoginAt,createdAt,token} });
             });
+            return { errorCode: "success", errorMessage: "success"}
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log({ errorCode, errorMessage })
-            return { errorCode, errorMessage }
+            return { errorCode, errorMessage}
         });
     }
 
     const logout = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
-            navigate('/login')
+            console.log("logged out")
+            navigate('/auth/login')
         }).catch((error) => {
             // An error happened.
             console.log(error)
@@ -120,14 +114,23 @@ export default () => {
     }
 
     const resetPassword = (email:string) => {
-        sendPasswordResetEmail(auth, email, actionCodeSettings)
+        sendPasswordResetEmail(auth, email).then(() => {
+            // Password reset email sent!
+            // ..
+            console.log("email sent")
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log({ errorCode, errorMessage })
+            return { errorCode, errorMessage}
+        });
     }
 
     return{
+        auth,
         login,
         register,
         logout,
         resetPassword,
-        // - reset password
     }
 }
